@@ -1,0 +1,33 @@
+{
+  "name": "vite-vue3-template",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
+    "@microsoft/fetch-event-source": "^2.0.1",
+    "@vueuse/core": "^13.0.0",
+    "ant-design-vue": "~4.2.6",
+    "axios": "^1.7.7",
+    "markmap-lib": "^0.17.2",
+    "markmap-view": "^0.17.2",
+    "mitt": "^3.0.1",
+    "pinia": "^2.2.6",
+    "pinia-plugin-persistedstate": "^3.2.3",
+    "socket.io-client": "^4.8.1",
+    "vue": "^3.5.13",
+    "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.0",
+    "sass": "^1.81.0",
+    "unplugin-vue-components": "^0.27.4",
+    "vite": "^5.4.11"
+  },
+  "packageManager": "pnpm@9.15.5+sha512.845196026aab1cc3f098a0474b64dfbab2afe7a1b4e91dd86895d8e4aa32a7a6d03049e2d0ad770bbe4de023a7122fb68c1a1d6e0d033c7076085f9d5d4800d4"
+}
