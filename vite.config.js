@@ -26,6 +26,7 @@ export default defineConfig({
   },
   server: {
     port: 5000,
+    host: '0.0.0.0',
     proxy: {
       "/api": {
         target: env.VITE_SERVICE_URL || 'http://127.0.0.1:3000',
@@ -34,6 +35,9 @@ export default defineConfig({
         ws: true,
       },
     },
+  },
+  optimizeDeps: {
+    exclude: ['markmap-view', 'markmap-lib'],
   },
   // 添加图标库配置
 })
