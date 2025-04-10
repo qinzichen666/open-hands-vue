@@ -22,7 +22,7 @@ const router = useRouter()
 const menuItems = [
   { key: 'basic', name: '基本设置', icon: SettingOutlined },
   { key: 'default-model', name: '默认模型', icon: ModelOutlined },
-  { key: 'model', name: '模型服务', icon: ApiOutlined }
+  { key: 'model-service', name: '模型服务', icon: ApiOutlined }
 ]
 </script>
 

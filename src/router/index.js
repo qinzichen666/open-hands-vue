@@ -40,7 +40,7 @@ const routes = [
         meta: { verify: true }
       },
       {
-        path: "model",
+        path: "model-service",
         component: () => import("@/view/setting/model.vue"),
         meta: { verify: true }
       }

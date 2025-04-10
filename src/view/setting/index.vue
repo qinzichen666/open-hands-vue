@@ -6,7 +6,7 @@
         <template #icon>
           <arrow-left-outlined />
         </template>
-        Back
+        返回
       </a-button>
     </div>
 
