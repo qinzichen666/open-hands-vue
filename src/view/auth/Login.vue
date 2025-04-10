@@ -448,7 +448,7 @@ const handleAppleRegister = async () => {
         color: #374151;
       }
       
-      .ant-input, .ant-input-password {
+      .ant-input {
         width: 360px;
         height: 40px;
         border-radius: 8px;
@@ -460,13 +460,28 @@ const handleAppleRegister = async () => {
       }
       
       .ant-input-affix-wrapper {
-        width: 360px;
-        height: 40px;
-        border-radius: 8px;
-        border: 1px solid #d1d5db;
+        width: 360px !important;
+        height: 40px !important;
+        border-radius: 8px !important;
+        border: 1px solid #d1d5db !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
         
         &:hover, &:focus, &-focused {
-          border-color: #4f46e5;
+          border-color: #4f46e5 !important;
+        }
+        
+        .ant-input {
+          width: 100% !important;
+          height: 38px !important;
+          border: none !important;
+          box-shadow: none !important;
+          padding: 0 !important;
+          background-color: transparent !important;
+          
+          &:focus {
+            box-shadow: none !important;
+          }
         }
       }
       
