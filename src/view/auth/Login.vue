@@ -45,12 +45,12 @@
         >
           <a-form-item
             name="email"
-            label="邮箱"
             :rules="[
               { required: true, message: '请输入邮箱!' },
               { type: 'email', message: '请输入有效的邮箱地址!' }
             ]"
           >
+            <div class="form-label">邮箱<span class="required-mark">*</span></div>
             <a-input v-model:value="loginForm.email" placeholder="请输入邮箱">
             </a-input>
           </a-form-item>
@@ -112,21 +112,21 @@
         >
           <a-form-item
             name="fullname"
-            label="姓名"
             :rules="[{ required: true, message: '请输入姓名!' }]"
           >
+            <div class="form-label">姓名<span class="required-mark">*</span></div>
             <a-input v-model:value="registerForm.fullname" placeholder="请输入姓名">
             </a-input>
           </a-form-item>
 
           <a-form-item
             name="email"
-            label="邮箱"
             :rules="[
               { required: true, message: '请输入邮箱!' },
               { type: 'email', message: '请输入有效的邮箱地址!' }
             ]"
           >
+            <div class="form-label">邮箱<span class="required-mark">*</span></div>
             <a-input v-model:value="registerForm.email" placeholder="请输入邮箱">
             </a-input>
           </a-form-item>
