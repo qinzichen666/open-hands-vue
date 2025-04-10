@@ -57,12 +57,11 @@
 
           <a-form-item
             name="password"
-            label="密码"
             :rules="[{ required: true, message: '请输入密码!' }]"
             extra=""
           >
             <div class="password-label-container">
-              <div></div>
+              <div class="form-label">密码</div>
               <a class="forgot-link" @click="activeKey = 'forgot'">忘记密码?</a>
             </div>
             <a-input-password v-model:value="loginForm.password" placeholder="请输入密码">
@@ -134,9 +133,9 @@
 
           <a-form-item
             name="password"
-            label="密码"
             :rules="[{ required: true, message: '请输入密码!' }]"
           >
+            <div class="form-label">密码</div>
             <a-input-password v-model:value="registerForm.password" placeholder="请输入密码">
             </a-input-password>
           </a-form-item>
@@ -422,6 +421,12 @@ const handleAppleRegister = async () => {
       align-items: center;
       margin-bottom: 4px;
       
+      .form-label {
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: 500;
+      }
+      
       .forgot-link {
         font-size: 14px;
         color: #4f46e5;
@@ -448,6 +453,13 @@ const handleAppleRegister = async () => {
         color: #374151;
       }
       
+      .form-label {
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+      
       .ant-input {
         width: 360px;
         height: 40px;
@@ -466,6 +478,7 @@ const handleAppleRegister = async () => {
         border: 1px solid #d1d5db !important;
         background-color: transparent !important;
         box-shadow: none !important;
+        padding: 0 11px !important;
         
         &:hover, &:focus, &-focused {
           border-color: #4f46e5 !important;
@@ -482,6 +495,10 @@ const handleAppleRegister = async () => {
           &:focus {
             box-shadow: none !important;
           }
+        }
+        
+        .ant-input-suffix {
+          margin-left: 0 !important;
         }
       }
       
