@@ -15,15 +15,16 @@
 
 <script>
 import { ref } from 'vue'
-import { SettingOutlined, ApiOutlined } from '@ant-design/icons-vue'
+import { SettingOutlined, ApiOutlined, DeploymentUnitOutlined as ModelOutlined } from '@ant-design/icons-vue'
 
 export default {
-  components: { SettingOutlined, ApiOutlined },
+  components: { SettingOutlined, ApiOutlined, ModelOutlined },
   emits: ['menu-change'],
   setup(props, { emit }) {
     const activeMenu = ref('basic')
     const menuItems = [
       { key: 'basic', name: '基本设置', icon: 'SettingOutlined' },
+      { key: 'default-model', name: '默认模型', icon: 'ModelOutlined' },
       { key: 'model', name: '模型服务', icon: 'ApiOutlined' }
     ]
 
