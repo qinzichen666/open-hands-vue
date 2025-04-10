@@ -3,6 +3,7 @@
     <!-- <ConversationSidebar :chats="conversations" /> -->
     <Sidebar />
     <ChatPanel />
+    <Preview />
   </div>
 </template>
 
@@ -10,11 +11,11 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import Sidebar from './sidebar/index.vue'
 import ChatPanel from './components/ChatPanel.vue'
+import Preview from '@/components/preview/index.vue'
 
 import { useRoute } from 'vue-router';
 const route = useRoute();
 
-import chat from "@/services/chat.js"
 import { useChatStore } from '@/store/modules/chat';
 const chatStore = useChatStore();
 

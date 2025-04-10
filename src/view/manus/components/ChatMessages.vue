@@ -8,27 +8,22 @@
             {{ message.role === 'user' ? 'U' : 'A' }}
           </div>
         </div>
-
-        <div class="message-content">
-          <div class="thought" v-if="message.args?.thought">{{ message.args?.thought }}</div>
-
-          <div class="message-text">{{ message.message }}</div>
-          <template v-if="message.content">
-            <code><pre>{{ message.content }}</pre></code>
-          </template>
-        </div>
+        <Message :message="message" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import Message from '../message/index.vue';
+
 defineProps({
   messages: {
     type: Array,
     default: () => []
   }
 })
+
 </script>
 
 <style lang="scss" scoped>
@@ -87,32 +82,5 @@ defineProps({
     color: #666;
     font-weight: 500;
   }
-}
-
-.message-content {
-  background: #fff;
-  padding: 12px 16px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-.message-sender {
-  font-size: 14px;
-  font-weight: 500;
-  color: #1f2329;
-  margin-bottom: 4px;
-}
-
-.message-text {
-  font-size: 14px;
-  color: #1f2329;
-  line-height: 1.5;
-  white-space: pre-wrap;
-}
-
-.message-time {
-  font-size: 12px;
-  color: #999;
-  margin-top: 4px;
 }
 </style>

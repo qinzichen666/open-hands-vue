@@ -52,6 +52,7 @@ export const useChatStore = defineStore('chat', {
           return;
         }
         if (action === 'recall') {
+          // 过滤不显示的信息
           return;
         }
         if (observation && observation === 'agent_state_changed') {
