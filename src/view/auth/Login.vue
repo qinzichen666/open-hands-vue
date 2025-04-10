@@ -33,7 +33,7 @@
         </div>
         
         <div class="divider">
-          <span>或</span>
+          <span>or</span>
         </div>
         
         <a-form
@@ -101,7 +101,7 @@
         </div>
         
         <div class="divider">
-          <span>或</span>
+          <span>or</span>
         </div>
         
         <a-form
@@ -408,7 +408,7 @@ const handleAppleRegister = async () => {
       
       span {
         position: relative;
-        background-color: white;
+        background-color: transparent;
         padding: 0 12px;
         color: #6b7280;
         font-size: 14px;
@@ -452,9 +452,20 @@ const handleAppleRegister = async () => {
         width: 360px;
         height: 40px;
         border-radius: 8px;
-        border-color: #d1d5db;
+        border: 1px solid #d1d5db;
         
         &:hover, &:focus {
+          border-color: #4f46e5;
+        }
+      }
+      
+      .ant-input-affix-wrapper {
+        width: 360px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        
+        &:hover, &:focus, &-focused {
           border-color: #4f46e5;
         }
       }
