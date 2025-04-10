@@ -4,7 +4,7 @@
       v-for="item in menuItems" 
       :key="item.key"
       class="menu-item"
-      :class="{active: $route.path.includes(item.key)}"
+      :class="{active: $route.path.endsWith(item.key)}"
       @click="$router.push(`/setting/${item.key}`)"
     >
       <component :is="item.icon" class="menu-icon" />
@@ -13,25 +13,17 @@
   </div>
 </template>
 
-<script>
-import { ref } from 'vue'
+<script setup>
 import { useRoute, useRouter } from 'vue-router'
 import { SettingOutlined, ApiOutlined, DeploymentUnitOutlined as ModelOutlined } from '@ant-design/icons-vue'
 
-export default {
-  components: { SettingOutlined, ApiOutlined, ModelOutlined },
-  setup() {
-    const route = useRoute()
-    const router = useRouter()
-    const menuItems = [
-      { key: 'basic', name: '基本设置', icon: 'SettingOutlined' },
-      { key: 'default-model', name: '默认模型', icon: 'ModelOutlined' },
-      { key: 'model', name: '模型服务', icon: 'ApiOutlined' }
-    ]
-
-    return { menuItems, $route: route, $router: router }
-  }
-}
+const route = useRoute()
+const router = useRouter()
+const menuItems = [
+  { key: 'basic', name: '基本设置', icon: SettingOutlined },
+  { key: 'default-model', name: '默认模型', icon: ModelOutlined },
+  { key: 'model', name: '模型服务', icon: ApiOutlined }
+]
 </script>
 
 <style scoped>
