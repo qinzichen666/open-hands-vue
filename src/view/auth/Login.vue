@@ -243,8 +243,8 @@ const handleRegister = async (values) => {
     loading.value = true;
     console.log('注册表单提交:', values);
     
-    // 修改为使用全名和邮箱注册
-    await AuthService.register(values.fullname, values.email, values.password);
+    // 只使用邮箱和密码注册，符合API要求
+    await AuthService.register(values.email, values.password);
     
     message.success('注册成功，请登录');
     activeKey.value = 'login';

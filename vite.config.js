@@ -34,7 +34,7 @@ export default defineConfig({
     },
     proxy: {
       "/api": {
-        target: env.VITE_SERVICE_URL || 'http://127.0.0.1:3000',
+        target: 'http://localhost:6000',
         protocol: "http",
         changeOrigin: true,
         ws: true,
