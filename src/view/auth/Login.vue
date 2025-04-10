@@ -9,7 +9,7 @@
       </div>
       
       <!-- Title -->
-      <h2 class="auth-title">{{ activeKey === 'login' ? '登录到 OpenHands' : activeKey === 'register' ? '注册 OpenHands 账号' : '重置密码' }}</h2>
+      <h2 class="auth-title">{{ pageTitle }}</h2>
       
       <div v-if="activeKey === 'login'">
         <!-- Login Form -->
@@ -250,6 +250,19 @@ const forgotForm = reactive({
 const verifyEmail = ref('');
 const verifyForm = reactive({
   code: ''
+});
+
+const pageTitle = computed(() => {
+  switch (activeKey.value) {
+    case 'login':
+      return '登录到 OpenHands';
+    case 'register':
+      return '注册 OpenHands 账号';
+    case 'verify':
+      return '验证你的邮箱地址';
+    default:
+      return '重置密码';
+  }
 });
 
 // 处理验证码提交
