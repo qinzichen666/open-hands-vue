@@ -4,24 +4,19 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { defineAsyncComponent } from 'vue'
 
-export default {
-  props: {
-    activeMenu: {
-      type: String,
-      required: true
-    }
-  },
-  computed: {
-    activeComponent() {
-      return defineAsyncComponent(() => 
-        import(`./${this.activeMenu}.vue`)
-      )
-    }
+const props = defineProps({
+  activeMenu: {
+    type: String,
+    required: true
   }
-}
+})
+
+const activeComponent = defineAsyncComponent(() =>
+  import(`./${props.activeMenu}.vue`)
+)
 </script>
 
 <style scoped>

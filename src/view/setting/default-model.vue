@@ -12,14 +12,11 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
-export default {
-  setup() {
-    const temperature = ref(0.7)
-    return { temperature }
-  }
-}
+
+const temperature = ref(0.7)
+// 可添加更多响应式逻辑
 </script>
 
 <style scoped>

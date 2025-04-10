@@ -1,7 +1,6 @@
 <template>
   <div class="basic-settings">
     <h2>基本设置</h2>
-    <!-- 这里添加基本设置的具体内容 -->
     <div class="setting-item">
       <p>账号设置</p>
     </div>
@@ -10,6 +9,10 @@
     </div>
   </div>
 </template>
+
+<script setup>
+// 可添加响应式逻辑
+</script>
 
 <style scoped>
 .basic-settings {

@@ -11,6 +11,13 @@
   </div>
 </template>
 
+<script setup>
+// 可添加模型服务相关逻辑
+// 例如：
+// const apiConfig = ref({})
+// const modelList = ref([])
+</script>
+
 <style scoped>
 .model-service {
   padding: 16px;
