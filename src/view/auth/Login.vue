@@ -193,7 +193,7 @@
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
-import AuthService from '@/services/auth.service';
+import auth from '@/services/auth';
 
 const router = useRouter();
 const activeKey = ref('login');
@@ -224,8 +224,8 @@ const handleLogin = async (values) => {
     loading.value = true;
     console.log('登录表单提交:', values);
     
-    // 修改为使用邮箱登录
-    await AuthService.login(values.email, values.password);
+    // 使用邮箱登录
+    await auth.login(values.email, values.password);
     
     message.success('登录成功');
     router.push('/');
@@ -244,7 +244,7 @@ const handleRegister = async (values) => {
     console.log('注册表单提交:', values);
     
     // 只使用邮箱和密码注册，符合API要求
-    await AuthService.register(values.email, values.password);
+    await auth.register(values.email, values.password);
     
     message.success('注册成功，请登录');
     activeKey.value = 'login';
@@ -266,7 +266,7 @@ const handleForgotPassword = async (values) => {
     loading.value = true;
     console.log('忘记密码表单提交:', values);
     
-    await AuthService.forgotPassword(values.email);
+    await auth.forgotPassword(values.email);
     
     message.success('重置密码邮件已发送，请查收');
     activeKey.value = 'login';
