@@ -54,7 +54,20 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+});
+
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('access_token');
+  const { meta = {} } = to;
+  // If route requires authentication and no token exists, redirect to login
+  if (meta.verify && !token) {
+    console.log("Authentication failed, redirecting to login");
+    next({ name: 'login' });
+    return;
+  }
+  next();
 })
 
 export default router
