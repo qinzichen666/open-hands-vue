@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container">
-    <Navbar v-if="showNavbar" />
+  <div class="app-container" v-cloak>
+    <Navbar v-if="showNavbar && isRouteReady" />
     <div class="content-container">
       <router-view></router-view>
     </div>
@@ -8,11 +8,20 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import Navbar from '@/components/Navbar.vue';
 
 const route = useRoute();
+const isRouteReady = ref(false);
+
+// Set route ready state after component is mounted
+onMounted(() => {
+  // Use setTimeout to ensure route is fully resolved
+  setTimeout(() => {
+    isRouteReady.value = true;
+  }, 10);
+});
 
 // Hide navbar on login page
 const showNavbar = computed(() => {
@@ -42,5 +51,10 @@ html, body {
   flex: 1;
   display: flex;
   flex-direction: column;
+}
+
+/* Hide uncompiled template until Vue is ready */
+[v-cloak] {
+  display: none;
 }
 </style>
