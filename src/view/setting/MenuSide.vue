@@ -4,8 +4,8 @@
       v-for="item in menuItems" 
       :key="item.key"
       class="menu-item"
-      :class="{active: activeMenu === item.key}"
-      @click="activeMenu = item.key"
+      :class="{active: $route.path.includes(item.key)}"
+      @click="$router.push(`/setting/${item.key}`)"
     >
       <component :is="item.icon" class="menu-icon" />
       <span>{{ item.name }}</span>
@@ -15,20 +15,21 @@
 
 <script>
 import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { SettingOutlined, ApiOutlined, DeploymentUnitOutlined as ModelOutlined } from '@ant-design/icons-vue'
 
 export default {
   components: { SettingOutlined, ApiOutlined, ModelOutlined },
-  emits: ['menu-change'],
-  setup(props, { emit }) {
-    const activeMenu = ref('basic')
+  setup() {
+    const route = useRoute()
+    const router = useRouter()
     const menuItems = [
       { key: 'basic', name: '基本设置', icon: 'SettingOutlined' },
       { key: 'default-model', name: '默认模型', icon: 'ModelOutlined' },
       { key: 'model', name: '模型服务', icon: 'ApiOutlined' }
     ]
 
-    return { activeMenu, menuItems }
+    return { menuItems, $route: route, $router: router }
   }
 }
 </script>
@@ -43,9 +44,10 @@ export default {
   display: flex;
   align-items: center;
   padding: 12px 20px;
-  margin: 0 8px;
+  margin: 4px 8px;
   cursor: pointer;
   border-radius: 4px;
+  font-size: 14px;
 }
 .menu-item:hover {
   background: #f5f5f5;

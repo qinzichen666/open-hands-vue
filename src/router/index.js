@@ -1,56 +1,14 @@
-import {
-  createRouter,
-  createWebHistory,
-} from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router'
+import settingRoutes from '@/view/setting/setting.routes'
 
 const routes = [
-  {
-    path: "/",
-    name: "app",
-    component: () => import(/* webpackChunkName: "manus" */ "@/view/manus/index.vue"),
-    meta: { verify: true }
-  },
-  {
-    path: "/manus/:id?",
-    name: "manus",
-    component: () => import(/* webpackChunkName: "manus" */ "@/view/manus/index.vue"),
-    meta: { verify: true }
-  },
-  {
-    path: "/demo",
-    name: "demo",
-    component: () => import(/* webpackChunkName: "demo" */ "@/view/demo/index.vue"),
-    meta: { verify: true }
-  },
-  {
-    path: "/auth",
-    name: "login",
-    component: () => import(/* webpackChunkName: "auth" */ "@/view/auth/index.vue"),
-  },
-  {
-    path: "/setting",
-    name: "setting",
-    component: () => import(/* webpackChunkName: "setting" */ "@/view/setting/index.vue"),
-    meta: { verify: true }
-  }
-];
+  settingRoutes,
+  // 其他路由...
+]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
-});
-
-
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('access_token');
-  const { meta = {} } = to;
-  // If route requires authentication and no token exists, redirect to login
-  if (meta.verify && !token) {
-    console.log("Authentication failed, redirecting to login");
-    next({ name: 'login' });
-    return;
-  }
-  next();
+  routes
 })
 
-export default router;
+export default router
