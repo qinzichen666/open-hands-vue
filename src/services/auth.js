@@ -15,9 +15,10 @@ const service = {
       });
       
       // 保存用户信息和token
-      if (response.data && response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+      console.log("Login response:", response.data);
+      if (response.data && response.data.access_token) {
+        localStorage.setItem('access_token', response.data.access_token);
+        // localStorage.setItem('user', JSON.stringify(response.data.user));
       }
       
       return response.data || {};

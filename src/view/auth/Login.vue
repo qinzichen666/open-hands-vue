@@ -222,13 +222,16 @@ const forgotForm = reactive({
 const handleLogin = async (values) => {
   try {
     loading.value = true;
-    console.log('登录表单提交:', values);
-    
     // 使用邮箱登录
     await auth.login(values.email, values.password);
     
     message.success('登录成功');
-    router.push('/');
+    // 跳转到首页 app
+    router.push(
+      {
+        name: 'app'
+      }
+    )
   } catch (error) {
     console.error('登录失败:', error);
     message.error('登录失败，请检查邮箱和密码');

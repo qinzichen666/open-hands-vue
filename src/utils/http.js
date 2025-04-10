@@ -17,11 +17,12 @@ const instance = axios.create({
 // 请求发起前拦截
 instance.interceptors.request.use(
   (config) => {
-    const userStore = useUserStore();
-    const accessToken = userStore.user.accessToken || localStorage.getItem("token");
+
+    const accessToken = localStorage.getItem('access_token');
     if (accessToken) {
-      config.headers["token"] = accessToken;
+      config.headers["access-token"] = accessToken;
     }
+
     // console.log("请求拦截", config);
     return config;
   },

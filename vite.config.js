@@ -25,28 +25,15 @@ export default defineConfig({
     },
   },
   server: {
-    port: 12000,
-    host: '0.0.0.0',
-    cors: true,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'X-Frame-Options': 'ALLOWALL'
-    },
+    port: 5000,
     proxy: {
       "/api": {
-        target: 'http://localhost:6000',
+        target: env.VITE_SERVICE_URL || 'http://127.0.0.1:3000',
         protocol: "http",
         changeOrigin: true,
         ws: true,
       },
     },
-    allowedHosts: [
-      'work-1-bodhaymhhcyxovth.prod-runtime.all-hands.dev',
-      'work-2-bodhaymhhcyxovth.prod-runtime.all-hands.dev'
-    ],
-  },
-  optimizeDeps: {
-    exclude: ['markmap-view', 'markmap-lib'],
   },
   // 添加图标库配置
 })
