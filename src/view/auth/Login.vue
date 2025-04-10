@@ -4,7 +4,7 @@
       <!-- Logo -->
       <div class="logo-container">
         <div class="logo">
-          <LogoSvg />
+          <img src="@/assets/svgs/logo.svg" alt="Logo"/>
         </div>
       </div>
       
@@ -16,7 +16,7 @@
         <div class="social-buttons">
           <a-button class="social-button google" @click="handleGoogleLogin">
             <template #icon>
-              <GoogleLogoSvg />
+              <img src="@/assets/svgs/google.svg"/>
             </template>
             使用 Google 登录
           </a-button>
@@ -78,7 +78,7 @@
         <div class="social-buttons">
           <a-button class="social-button google" @click="handleGoogleRegister">
             <template #icon>
-              <GoogleLogoSvg />
+              <img src="@/assets/svgs/google.svg" alt="Google Logo"/>
             </template>
             使用 Google 注册
           </a-button>
@@ -216,12 +216,10 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive,computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import auth from '@/services/auth';
-import LogoSvg from '@/assets/svgs/logo.svg';
-import GoogleLogoSvg from '@/assets/svgs/google-logo.svg';
 
 const router = useRouter();
 const activeKey = ref('login');
@@ -461,7 +459,11 @@ const handleAppleRegister = async () => {
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 15px;
+        font-size: 14px;
+
+        img{
+          margin-right: 6px;
+        }
         
         &.google {
           border: none;
