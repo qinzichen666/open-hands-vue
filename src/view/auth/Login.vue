@@ -61,7 +61,12 @@
           </a-form-item>
 
           <a-form-item>
-            <a-button type="primary" html-type="submit" block :loading="loading">
+            <a-button 
+              type="primary" 
+              html-type="submit" 
+              block 
+              :loading="loading"
+              :disabled="!isLoginValid">
               登录
             </a-button>
           </a-form-item>
@@ -128,7 +133,12 @@
           </a-form-item>
 
           <a-form-item>
-            <a-button type="primary" html-type="submit" block :loading="loading">
+            <a-button 
+              type="primary" 
+              html-type="submit" 
+              block 
+              :loading="loading"
+              :disabled="!isRegisterValid">
               注册
             </a-button>
           </a-form-item>
@@ -232,11 +242,19 @@ const loginForm = reactive({
   remember: false
 });
 
+const isLoginValid = computed(() => {
+  return loginForm.email && loginForm.password;
+});
+
 // 注册表单
 const registerForm = reactive({
   fullname: '',
   email: '',
   password: ''
+});
+
+const isRegisterValid = computed(() => {
+  return registerForm.fullname && registerForm.email && registerForm.password;
 });
 
 // 忘记密码表单
