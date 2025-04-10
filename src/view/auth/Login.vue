@@ -1,6 +1,6 @@
 <template>
   <div class="auth-container">
-    <div class="auth-card">
+    <div class="auth-content">
       <!-- Logo -->
       <div class="logo-container">
         <div class="logo">
@@ -29,14 +29,7 @@
             使用 Google 登录
           </a-button>
           
-          <a-button class="social-button apple" @click="handleAppleLogin">
-            <template #icon>
-              <svg viewBox="0 0 24 24" width="18" height="18">
-                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.23 2.31-.93 3.57-.8 1.51.15 2.65.77 3.4 1.91-3.12 1.93-2.42 5.73.13 7.13-.91 1.93-2.13 3.9-4.18 3.93zm-4.05-14.65c-.09-2.47 2.01-4.48 4.24-4.63.27 2.57-2.31 4.53-4.24 4.63z" fill="currentColor"/>
-              </svg>
-            </template>
-            使用 Apple 登录
-          </a-button>
+          <!-- Apple login button hidden as requested -->
         </div>
         
         <div class="divider">
@@ -104,14 +97,7 @@
             使用 Google 注册
           </a-button>
           
-          <a-button class="social-button apple" @click="handleAppleRegister">
-            <template #icon>
-              <svg viewBox="0 0 24 24" width="18" height="18">
-                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.23 2.31-.93 3.57-.8 1.51.15 2.65.77 3.4 1.91-3.12 1.93-2.42 5.73.13 7.13-.91 1.93-2.13 3.9-4.18 3.93zm-4.05-14.65c-.09-2.47 2.01-4.48 4.24-4.63.27 2.57-2.31 4.53-4.24 4.63z" fill="currentColor"/>
-              </svg>
-            </template>
-            使用 Apple 注册
-          </a-button>
+          <!-- Apple register button hidden as requested -->
         </div>
         
         <div class="divider">
@@ -352,15 +338,12 @@ const handleAppleRegister = async () => {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f9fafb;
+  background-color: #f8f8f7;
   
-  .auth-card {
+  .auth-content {
     width: 100%;
     max-width: 420px;
     padding: 32px;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     
     .logo-container {
       display: flex;
@@ -387,9 +370,11 @@ const handleAppleRegister = async () => {
       flex-direction: column;
       gap: 12px;
       margin-bottom: 24px;
+      align-items: center;
       
       .social-button {
-        height: 44px;
+        width: 360px;
+        height: 40px;
         border-radius: 8px;
         display: flex;
         align-items: center;
@@ -397,15 +382,10 @@ const handleAppleRegister = async () => {
         font-size: 15px;
         
         &.google {
-          border: 1px solid #ddd;
+          border: none;
           background-color: white;
           color: #333;
-        }
-        
-        &.apple {
-          border: 1px solid #ddd;
-          background-color: white;
-          color: #333;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
       }
     }
@@ -455,6 +435,12 @@ const handleAppleRegister = async () => {
     
     :deep(.ant-form-item) {
       margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      
+      .ant-form-item-control {
+        width: 360px;
+      }
       
       .ant-form-item-label > label {
         font-size: 14px;
@@ -463,7 +449,8 @@ const handleAppleRegister = async () => {
       }
       
       .ant-input, .ant-input-password {
-        height: 44px;
+        width: 360px;
+        height: 40px;
         border-radius: 8px;
         border-color: #d1d5db;
         
@@ -473,7 +460,8 @@ const handleAppleRegister = async () => {
       }
       
       .ant-btn {
-        height: 44px;
+        width: 360px;
+        height: 40px;
         border-radius: 8px;
         font-size: 16px;
         font-weight: 500;
