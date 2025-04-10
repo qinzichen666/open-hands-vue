@@ -17,19 +17,19 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
-import AuthService from '@/services/auth.service';
+import auth from '@/services/auth';
 
 const router = useRouter();
-const isLoggedIn = ref(AuthService.isLoggedIn());
+const isLoggedIn = ref(auth.isLoggedIn());
 
 // 监听存储变化，更新登录状态
 const handleStorageChange = () => {
-  isLoggedIn.value = AuthService.isLoggedIn();
+  isLoggedIn.value = auth.isLoggedIn();
 };
 
 // 处理登出
 const handleLogout = () => {
-  AuthService.logout();
+  auth.logout();
   message.success('已成功登出');
   isLoggedIn.value = false;
   router.push('/auth');
@@ -38,7 +38,7 @@ const handleLogout = () => {
 onMounted(() => {
   window.addEventListener('storage', handleStorageChange);
   // 初始检查登录状态
-  isLoggedIn.value = AuthService.isLoggedIn();
+  isLoggedIn.value = auth.isLoggedIn();
 });
 
 onUnmounted(() => {
