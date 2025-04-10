@@ -186,7 +186,6 @@
       <div v-if="activeKey === 'verify'">
         <!-- Email Verification Form -->
         <div class="verify-container">
-          <h2 class="auth-title">验证你的邮箱地址</h2>
           <p class="verify-text">验证码已发送至 {{ verifyEmail }}</p>
           
           <a-form
@@ -271,9 +270,9 @@ const verifyForm = reactive({
 const pageTitle = computed(() => {
   switch (activeKey.value) {
     case 'login':
-      return '登录到 OpenHands';
+      return '登录到 OpenAgent';
     case 'register':
-      return '注册 OpenHands 账号';
+      return '注册 OpenAgent 账号';
     case 'verify':
       return '验证你的邮箱地址';
     default:
@@ -346,11 +345,19 @@ const handleRegister = async (values) => {
     
     console.log('注册表单提交:', values);
     // 暂时注释API调用
-    // await auth.register(values.email, values.password);
+    await auth.register(values.email, values.password);
+    
+
+    message.success('注册成功，请登录');
+    activeKey.value = 'login';
+    
+    // 预填充登录表单
+    loginForm.email = values.email;
+    loginForm.password = '';
     
     // 跳转到邮箱验证页面
-    activeKey.value = 'verify';
-    verifyEmail.value = values.email;
+    // activeKey.value = 'verify';
+    // verifyEmail.value = values.email;
   } catch (error) {
     console.error('注册校验失败:', error);
     message.error(error.message || '注册失败，请检查输入');
