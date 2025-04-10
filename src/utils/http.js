@@ -20,7 +20,10 @@ instance.interceptors.request.use(
 
     const accessToken = localStorage.getItem('access_token');
     if (accessToken) {
-      config.headers["access-token"] = accessToken;
+      config.headers = {
+        ...config.headers, // 保留原有的 headers 配置
+        "Authorization": `Bearer ${accessToken}`
+      };
     }
 
     // console.log("请求拦截", config);
