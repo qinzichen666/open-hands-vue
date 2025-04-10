@@ -185,6 +185,45 @@
           </div>
         </a-form>
       </div>
+
+      <div v-if="activeKey === 'verify'">
+        <!-- Email Verification Form -->
+        <div class="verify-container">
+          <h2 class="auth-title">验证你的邮箱地址</h2>
+          <p class="verify-text">验证码已发送至 {{ verifyEmail }}</p>
+          
+          <a-form
+            :model="verifyForm"
+            name="verify-form"
+            @finish="handleVerify"
+            autocomplete="off"
+            layout="vertical"
+          >
+            <a-form-item
+              name="code"
+              :rules="[{ required: true, message: '请输入验证码!' }]"
+            >
+              <a-input v-model:value="verifyForm.code" placeholder="请输入6位验证码">
+              </a-input>
+            </a-form-item>
+
+            <a-form-item>
+              <a-button 
+                type="primary" 
+                html-type="submit" 
+                block 
+                :loading="loading"
+                :disabled="!verifyForm.code">
+                验证邮箱
+              </a-button>
+            </a-form-item>
+
+            <div class="verify-footer">
+              <p>没有收到验证码？ <a @click="resendCode">重新发送</a></p>
+            </div>
+          </a-form>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -218,6 +257,32 @@ const forgotForm = reactive({
   email: ''
 });
 
+// 验证相关状态
+const verifyEmail = ref('');
+const verifyForm = reactive({
+  code: ''
+});
+
+// 处理验证码提交
+const handleVerify = async () => {
+  try {
+    loading.value = true;
+    // 这里添加验证码验证逻辑
+    message.success('邮箱验证成功');
+    // 验证成功后跳转到应用
+    router.push('/app');
+  } catch (error) {
+    message.error('验证码错误，请重试');
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 重新发送验证码
+const resendCode = () => {
+  message.info('验证码已重新发送');
+};
+
 // 处理登录
 const handleLogin = async (values) => {
   try {
@@ -244,20 +309,33 @@ const handleLogin = async (values) => {
 const handleRegister = async (values) => {
   try {
     loading.value = true;
+    
+    // 基础非空校验
+    if (!values.fullname || !values.email || !values.password) {
+      throw new Error('请填写完整注册信息');
+    }
+    
+    // 邮箱格式校验
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(values.email)) {
+      throw new Error('请输入有效的邮箱地址');
+    }
+    
+    // 密码长度校验
+    if (values.password.length < 6) {
+      throw new Error('密码长度不能少于6位');
+    }
+    
     console.log('注册表单提交:', values);
+    // 暂时注释API调用
+    // await auth.register(values.email, values.password);
     
-    // 只使用邮箱和密码注册，符合API要求
-    await auth.register(values.email, values.password);
-    
-    message.success('注册成功，请登录');
-    activeKey.value = 'login';
-    
-    // 预填充登录表单
-    loginForm.email = values.email;
-    loginForm.password = '';
+    // 跳转到邮箱验证页面
+    activeKey.value = 'verify';
+    verifyEmail.value = values.email;
   } catch (error) {
-    console.error('注册失败:', error);
-    message.error('注册失败，请稍后再试');
+    console.error('注册校验失败:', error);
+    message.error(error.message || '注册失败，请检查输入');
   } finally {
     loading.value = false;
   }
@@ -524,6 +602,18 @@ const handleAppleRegister = async () => {
           background-color: #4338ca;
           border-color: #4338ca;
         }
+
+        &[disabled] {
+          background-color: #d1d5db;
+          border-color: #d1d5db;
+          color: white;
+          cursor: not-allowed;
+          
+          &:hover {
+            background-color: #d1d5db;
+            border-color: #d1d5db;
+          }
+        }
       }
     }
     
@@ -542,6 +632,63 @@ const handleAppleRegister = async () => {
           text-decoration: underline;
         }
       }
+    }
+  }
+}
+
+.verify-container {
+  text-align: center;
+  padding: 24px;
+  
+  .verify-icon {
+    margin-bottom: 24px;
+    
+    svg {
+      color: #4f46e5;
+    }
+  }
+  
+  .verify-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #111827;
+  }
+  
+  .verify-text {
+    font-size: 16px;
+    color: #6b7280;
+    margin-bottom: 32px;
+  }
+  
+  .verify-footer {
+    margin-top: 24px;
+    font-size: 14px;
+    color: #6b7280;
+    
+    p {
+      margin-bottom: 12px;
+    }
+    
+    a {
+      color: #4f46e5;
+      font-weight: 500;
+      cursor: pointer;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  :deep(.ant-form-item) {
+    max-width: 360px;
+    margin: 0 auto;
+    
+    .ant-input {
+      text-align: center;
+      letter-spacing: 8px;
+      font-size: 18px;
     }
   }
 }
