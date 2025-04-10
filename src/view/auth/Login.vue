@@ -61,7 +61,7 @@
             extra=""
           >
             <div class="password-label-container">
-              <div class="form-label">密码</div>
+              <div class="form-label">密码<span class="required-mark">*</span></div>
               <a class="forgot-link" @click="activeKey = 'forgot'">忘记密码?</a>
             </div>
             <a-input-password v-model:value="loginForm.password" placeholder="请输入密码">
@@ -135,7 +135,7 @@
             name="password"
             :rules="[{ required: true, message: '请输入密码!' }]"
           >
-            <div class="form-label">密码</div>
+            <div class="form-label">密码<span class="required-mark">*</span></div>
             <a-input-password v-model:value="registerForm.password" placeholder="请输入密码">
             </a-input-password>
           </a-form-item>
@@ -458,6 +458,11 @@ const handleAppleRegister = async () => {
         color: rgba(0, 0, 0, 0.85);
         font-weight: 500;
         margin-bottom: 4px;
+        
+        .required-mark {
+          color: #ff4d4f;
+          margin-left: 2px;
+        }
       }
       
       .ant-input {
@@ -465,6 +470,7 @@ const handleAppleRegister = async () => {
         height: 40px;
         border-radius: 8px;
         border: 1px solid #d1d5db;
+        background-color: #ffffff;
         
         &:hover, &:focus {
           border-color: #4f46e5;
@@ -476,7 +482,7 @@ const handleAppleRegister = async () => {
         height: 40px !important;
         border-radius: 8px !important;
         border: 1px solid #d1d5db !important;
-        background-color: transparent !important;
+        background-color: #ffffff !important;
         box-shadow: none !important;
         padding: 0 11px !important;
         
@@ -490,7 +496,7 @@ const handleAppleRegister = async () => {
           border: none !important;
           box-shadow: none !important;
           padding: 0 !important;
-          background-color: transparent !important;
+          background-color: #ffffff !important;
           
           &:focus {
             box-shadow: none !important;
