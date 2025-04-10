@@ -30,21 +30,17 @@ const routes = [
     meta: { verify: true },
     children: [
       {
-        path: "",
-        redirect: "basic"
-      },
-      {
-        path: "/basic",
+        path: "basic",
         component: () => import("@/view/setting/basic.vue"),
         meta: { verify: true }
       },
       {
-        path: "/default-model",
+        path: "default-model",
         component: () => import("@/view/setting/default-model.vue"),
         meta: { verify: true }
       },
       {
-        path: "/model",
+        path: "model",
         component: () => import("@/view/setting/model.vue"),
         meta: { verify: true }
       }
