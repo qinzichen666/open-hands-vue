@@ -1,173 +1,205 @@
 <template>
   <div class="auth-container">
     <div class="auth-card">
-      <a-tabs v-model:activeKey="activeKey" centered>
-        <a-tab-pane key="login" tab="登录">
-          <a-form
-            :model="loginForm"
-            name="login-form"
-            @finish="handleLogin"
-            autocomplete="off"
-            layout="vertical"
+      <!-- Logo -->
+      <div class="logo-container">
+        <div class="logo">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/>
+            <path d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" fill="currentColor"/>
+          </svg>
+        </div>
+      </div>
+      
+      <!-- Title -->
+      <h2 class="auth-title">{{ activeKey === 'login' ? '登录到 OpenHands' : activeKey === 'register' ? '注册 OpenHands 账号' : '重置密码' }}</h2>
+      
+      <div v-if="activeKey === 'login'">
+        <!-- Login Form -->
+        <div class="social-buttons">
+          <a-button class="social-button google" @click="handleGoogleLogin">
+            <template #icon>
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+            </template>
+            使用 Google 登录
+          </a-button>
+          
+          <a-button class="social-button apple" @click="handleAppleLogin">
+            <template #icon>
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.23 2.31-.93 3.57-.8 1.51.15 2.65.77 3.4 1.91-3.12 1.93-2.42 5.73.13 7.13-.91 1.93-2.13 3.9-4.18 3.93zm-4.05-14.65c-.09-2.47 2.01-4.48 4.24-4.63.27 2.57-2.31 4.53-4.24 4.63z" fill="currentColor"/>
+              </svg>
+            </template>
+            使用 Apple 登录
+          </a-button>
+        </div>
+        
+        <div class="divider">
+          <span>或</span>
+        </div>
+        
+        <a-form
+          :model="loginForm"
+          name="login-form"
+          @finish="handleLogin"
+          autocomplete="off"
+          layout="vertical"
+        >
+          <a-form-item
+            name="email"
+            label="邮箱"
+            :rules="[
+              { required: true, message: '请输入邮箱!' },
+              { type: 'email', message: '请输入有效的邮箱地址!' }
+            ]"
           >
-            <a-form-item
-              name="username"
-              label="用户名"
-              :rules="[{ required: true, message: '请输入用户名!' }]"
-            >
-              <a-input v-model:value="loginForm.username" placeholder="请输入用户名">
-                <template #prefix>
-                  <UserOutlined />
-                </template>
-              </a-input>
-            </a-form-item>
+            <a-input v-model:value="loginForm.email" placeholder="请输入邮箱">
+            </a-input>
+          </a-form-item>
 
-            <a-form-item
-              name="password"
-              label="密码"
-              :rules="[{ required: true, message: '请输入密码!' }]"
-            >
-              <a-input-password v-model:value="loginForm.password" placeholder="请输入密码">
-                <template #prefix>
-                  <LockOutlined />
-                </template>
-              </a-input-password>
-            </a-form-item>
-
-            <a-form-item>
-              <a-row :gutter="8">
-                <a-col :span="12">
-                  <a-checkbox v-model:checked="loginForm.remember">记住我</a-checkbox>
-                </a-col>
-                <a-col :span="12" style="text-align: right">
-                  <a @click="activeKey = 'forgot'">忘记密码?</a>
-                </a-col>
-              </a-row>
-            </a-form-item>
-
-            <a-form-item>
-              <a-button type="primary" html-type="submit" block :loading="loading">
-                登录
-              </a-button>
-            </a-form-item>
-
-            <a-form-item style="text-align: center">
-              <span>还没有账号? </span>
-              <a @click="activeKey = 'register'">立即注册</a>
-            </a-form-item>
-          </a-form>
-        </a-tab-pane>
-
-        <a-tab-pane key="register" tab="注册">
-          <a-form
-            :model="registerForm"
-            name="register-form"
-            @finish="handleRegister"
-            autocomplete="off"
-            layout="vertical"
+          <a-form-item
+            name="password"
+            label="密码"
+            :rules="[{ required: true, message: '请输入密码!' }]"
+            extra=""
           >
-            <a-form-item
-              name="username"
-              label="用户名"
-              :rules="[{ required: true, message: '请输入用户名!' }]"
-            >
-              <a-input v-model:value="registerForm.username" placeholder="请输入用户名">
-                <template #prefix>
-                  <UserOutlined />
-                </template>
-              </a-input>
-            </a-form-item>
+            <div class="password-label-container">
+              <div></div>
+              <a class="forgot-link" @click="activeKey = 'forgot'">忘记密码?</a>
+            </div>
+            <a-input-password v-model:value="loginForm.password" placeholder="请输入密码">
+            </a-input-password>
+          </a-form-item>
 
-            <a-form-item
-              name="email"
-              label="邮箱"
-              :rules="[
-                { required: true, message: '请输入邮箱!' },
-                { type: 'email', message: '请输入有效的邮箱地址!' }
-              ]"
-            >
-              <a-input v-model:value="registerForm.email" placeholder="请输入邮箱">
-                <template #prefix>
-                  <MailOutlined />
-                </template>
-              </a-input>
-            </a-form-item>
+          <a-form-item>
+            <a-button type="primary" html-type="submit" block :loading="loading">
+              登录
+            </a-button>
+          </a-form-item>
 
-            <a-form-item
-              name="password"
-              label="密码"
-              :rules="[{ required: true, message: '请输入密码!' }]"
-            >
-              <a-input-password v-model:value="registerForm.password" placeholder="请输入密码">
-                <template #prefix>
-                  <LockOutlined />
-                </template>
-              </a-input-password>
-            </a-form-item>
-
-            <a-form-item
-              name="confirmPassword"
-              label="确认密码"
-              :rules="[
-                { required: true, message: '请确认密码!' },
-                { validator: validateConfirmPassword }
-              ]"
-            >
-              <a-input-password v-model:value="registerForm.confirmPassword" placeholder="请确认密码">
-                <template #prefix>
-                  <LockOutlined />
-                </template>
-              </a-input-password>
-            </a-form-item>
-
-            <a-form-item>
-              <a-button type="primary" html-type="submit" block :loading="loading">
-                注册
-              </a-button>
-            </a-form-item>
-
-            <a-form-item style="text-align: center">
-              <span>已有账号? </span>
-              <a @click="activeKey = 'login'">立即登录</a>
-            </a-form-item>
-          </a-form>
-        </a-tab-pane>
-
-        <a-tab-pane key="forgot" tab="忘记密码">
-          <a-form
-            :model="forgotForm"
-            name="forgot-form"
-            @finish="handleForgotPassword"
-            autocomplete="off"
-            layout="vertical"
+          <div class="auth-footer">
+            <span>还没有账号? </span>
+            <a @click="activeKey = 'register'">注册</a>
+          </div>
+        </a-form>
+      </div>
+      
+      <div v-if="activeKey === 'register'">
+        <!-- Register Form -->
+        <div class="social-buttons">
+          <a-button class="social-button google" @click="handleGoogleRegister">
+            <template #icon>
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+            </template>
+            使用 Google 注册
+          </a-button>
+          
+          <a-button class="social-button apple" @click="handleAppleRegister">
+            <template #icon>
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.23 2.31-.93 3.57-.8 1.51.15 2.65.77 3.4 1.91-3.12 1.93-2.42 5.73.13 7.13-.91 1.93-2.13 3.9-4.18 3.93zm-4.05-14.65c-.09-2.47 2.01-4.48 4.24-4.63.27 2.57-2.31 4.53-4.24 4.63z" fill="currentColor"/>
+              </svg>
+            </template>
+            使用 Apple 注册
+          </a-button>
+        </div>
+        
+        <div class="divider">
+          <span>或</span>
+        </div>
+        
+        <a-form
+          :model="registerForm"
+          name="register-form"
+          @finish="handleRegister"
+          autocomplete="off"
+          layout="vertical"
+        >
+          <a-form-item
+            name="fullname"
+            label="姓名"
+            :rules="[{ required: true, message: '请输入姓名!' }]"
           >
-            <a-form-item
-              name="email"
-              label="邮箱"
-              :rules="[
-                { required: true, message: '请输入邮箱!' },
-                { type: 'email', message: '请输入有效的邮箱地址!' }
-              ]"
-            >
-              <a-input v-model:value="forgotForm.email" placeholder="请输入注册时使用的邮箱">
-                <template #prefix>
-                  <MailOutlined />
-                </template>
-              </a-input>
-            </a-form-item>
+            <a-input v-model:value="registerForm.fullname" placeholder="请输入姓名">
+            </a-input>
+          </a-form-item>
 
-            <a-form-item>
-              <a-button type="primary" html-type="submit" block :loading="loading">
-                重置密码
-              </a-button>
-            </a-form-item>
+          <a-form-item
+            name="email"
+            label="邮箱"
+            :rules="[
+              { required: true, message: '请输入邮箱!' },
+              { type: 'email', message: '请输入有效的邮箱地址!' }
+            ]"
+          >
+            <a-input v-model:value="registerForm.email" placeholder="请输入邮箱">
+            </a-input>
+          </a-form-item>
 
-            <a-form-item style="text-align: center">
-              <a @click="activeKey = 'login'">返回登录</a>
-            </a-form-item>
-          </a-form>
-        </a-tab-pane>
-      </a-tabs>
+          <a-form-item
+            name="password"
+            label="密码"
+            :rules="[{ required: true, message: '请输入密码!' }]"
+          >
+            <a-input-password v-model:value="registerForm.password" placeholder="请输入密码">
+            </a-input-password>
+          </a-form-item>
+
+          <a-form-item>
+            <a-button type="primary" html-type="submit" block :loading="loading">
+              注册
+            </a-button>
+          </a-form-item>
+
+          <div class="auth-footer">
+            <span>已有账号? </span>
+            <a @click="activeKey = 'login'">登录</a>
+          </div>
+        </a-form>
+      </div>
+      
+      <div v-if="activeKey === 'forgot'">
+        <!-- Forgot Password Form -->
+        <a-form
+          :model="forgotForm"
+          name="forgot-form"
+          @finish="handleForgotPassword"
+          autocomplete="off"
+          layout="vertical"
+        >
+          <a-form-item
+            name="email"
+            label="邮箱"
+            :rules="[
+              { required: true, message: '请输入邮箱!' },
+              { type: 'email', message: '请输入有效的邮箱地址!' }
+            ]"
+          >
+            <a-input v-model:value="forgotForm.email" placeholder="请输入注册时使用的邮箱">
+            </a-input>
+          </a-form-item>
+
+          <a-form-item>
+            <a-button type="primary" html-type="submit" block :loading="loading">
+              重置密码
+            </a-button>
+          </a-form-item>
+
+          <div class="auth-footer">
+            <a @click="activeKey = 'login'">返回登录</a>
+          </div>
+        </a-form>
+      </div>
     </div>
   </div>
 </template>
@@ -176,7 +208,6 @@
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
-import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons-vue';
 import AuthService from '@/services/auth.service';
 
 const router = useRouter();
@@ -185,17 +216,16 @@ const loading = ref(false);
 
 // 登录表单
 const loginForm = reactive({
-  username: '',
+  email: '',
   password: '',
   remember: false
 });
 
 // 注册表单
 const registerForm = reactive({
-  username: '',
+  fullname: '',
   email: '',
-  password: '',
-  confirmPassword: ''
+  password: ''
 });
 
 // 忘记密码表单
@@ -203,27 +233,20 @@ const forgotForm = reactive({
   email: ''
 });
 
-// 验证确认密码
-const validateConfirmPassword = async (rule, value) => {
-  if (value !== registerForm.password) {
-    return Promise.reject('两次输入的密码不一致!');
-  }
-  return Promise.resolve();
-};
-
 // 处理登录
 const handleLogin = async (values) => {
   try {
     loading.value = true;
     console.log('登录表单提交:', values);
     
-    await AuthService.login(values.username, values.password);
+    // 修改为使用邮箱登录
+    await AuthService.login(values.email, values.password);
     
     message.success('登录成功');
     router.push('/');
   } catch (error) {
     console.error('登录失败:', error);
-    message.error('登录失败，请检查用户名和密码');
+    message.error('登录失败，请检查邮箱和密码');
   } finally {
     loading.value = false;
   }
@@ -235,13 +258,14 @@ const handleRegister = async (values) => {
     loading.value = true;
     console.log('注册表单提交:', values);
     
-    await AuthService.register(values.username, values.email, values.password);
+    // 修改为使用全名和邮箱注册
+    await AuthService.register(values.fullname, values.email, values.password);
     
     message.success('注册成功，请登录');
     activeKey.value = 'login';
     
     // 预填充登录表单
-    loginForm.username = values.username;
+    loginForm.email = values.email;
     loginForm.password = '';
   } catch (error) {
     console.error('注册失败:', error);
@@ -268,6 +292,58 @@ const handleForgotPassword = async (values) => {
     loading.value = false;
   }
 };
+
+// 社交登录方法
+const handleGoogleLogin = async () => {
+  try {
+    loading.value = true;
+    console.log('Google 登录');
+    message.info('Google 登录功能正在开发中');
+    // 实际实现可能需要调用 OAuth 服务
+    // await AuthService.googleLogin();
+  } catch (error) {
+    console.error('Google 登录失败:', error);
+    message.error('Google 登录失败，请稍后再试');
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handleAppleLogin = async () => {
+  try {
+    loading.value = true;
+    console.log('Apple 登录');
+    message.info('Apple 登录功能正在开发中');
+    // 实际实现可能需要调用 OAuth 服务
+    // await AuthService.appleLogin();
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handleGoogleRegister = async () => {
+  try {
+    loading.value = true;
+    console.log('Google 注册');
+    message.info('Google 注册功能正在开发中');
+    // 实际实现可能需要调用 OAuth 服务
+    // await AuthService.googleRegister();
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handleAppleRegister = async () => {
+  try {
+    loading.value = true;
+    console.log('Apple 注册');
+    message.info('Apple 注册功能正在开发中');
+    // 实际实现可能需要调用 OAuth 服务
+    // await AuthService.appleRegister();
+  } finally {
+    loading.value = false;
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -276,19 +352,156 @@ const handleForgotPassword = async (values) => {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f0f2f5;
+  background-color: #f9fafb;
   
   .auth-card {
     width: 100%;
-    max-width: 400px;
-    padding: 24px;
+    max-width: 420px;
+    padding: 32px;
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     
-    h2 {
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 16px;
+      
+      .logo {
+        width: 64px;
+        height: 64px;
+        color: #333;
+      }
+    }
+    
+    .auth-title {
       text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 32px;
+      color: #111827;
+    }
+    
+    .social-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
       margin-bottom: 24px;
+      
+      .social-button {
+        height: 44px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        
+        &.google {
+          border: 1px solid #ddd;
+          background-color: white;
+          color: #333;
+        }
+        
+        &.apple {
+          border: 1px solid #ddd;
+          background-color: white;
+          color: #333;
+        }
+      }
+    }
+    
+    .divider {
+      position: relative;
+      text-align: center;
+      margin: 24px 0;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background-color: #e5e7eb;
+        z-index: 0;
+      }
+      
+      span {
+        position: relative;
+        background-color: white;
+        padding: 0 12px;
+        color: #6b7280;
+        font-size: 14px;
+        z-index: 1;
+      }
+    }
+    
+    .password-label-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+      
+      .forgot-link {
+        font-size: 14px;
+        color: #4f46e5;
+        cursor: pointer;
+        
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+    
+    :deep(.ant-form-item) {
+      margin-bottom: 20px;
+      
+      .ant-form-item-label > label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #374151;
+      }
+      
+      .ant-input, .ant-input-password {
+        height: 44px;
+        border-radius: 8px;
+        border-color: #d1d5db;
+        
+        &:hover, &:focus {
+          border-color: #4f46e5;
+        }
+      }
+      
+      .ant-btn {
+        height: 44px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        background-color: #4f46e5;
+        border-color: #4f46e5;
+        
+        &:hover {
+          background-color: #4338ca;
+          border-color: #4338ca;
+        }
+      }
+    }
+    
+    .auth-footer {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 14px;
+      color: #6b7280;
+      
+      a {
+        color: #4f46e5;
+        font-weight: 500;
+        cursor: pointer;
+        
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
   }
 }
