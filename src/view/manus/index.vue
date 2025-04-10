@@ -4,6 +4,7 @@
     <Sidebar />
     <ChatPanel />
     <Preview />
+    <Terminal v-if="false" />
   </div>
 </template>
 
@@ -12,7 +13,7 @@ import { ref, onMounted, onUnmounted, watch } from 'vue'
 import Sidebar from './sidebar/index.vue'
 import ChatPanel from './components/ChatPanel.vue'
 import Preview from '@/components/preview/index.vue'
-
+import Terminal from '@/components/terminal/index.vue'
 import { useRoute } from 'vue-router';
 const route = useRoute();
 

@@ -17,6 +17,9 @@ importers:
       '@vueuse/core':
         specifier: ^13.0.0
         version: 13.1.0(vue@3.5.13)
+      '@xterm/xterm':
+        specifier: ^5.5.0
+        version: 5.5.0
       ant-design-vue:
         specifier: ~4.2.6
         version: 4.2.6(vue@3.5.13)
@@ -535,6 +538,9 @@ packages:
     resolution: {integrity: sha512-IVS/qRRjhPTZ6C2/AM3jieqXACGwFZwWTdw5sNTSKk2m/ZpkuuN+ri+WCVUP8TqaKwJYt/KuMwmXspMAw8E6ew==}
     peerDependencies:
       vue: ^3.5.0
+
+  '@xterm/xterm@5.5.0':
+    resolution: {integrity: sha512-hqJHYaQb5OptNunnyAnkHyM8aCjZ1MEIDTQu1iIbbTD/xops91NB5yq1ZK/dC2JDbVWtF23zUtl9JE2NqwT87A==}
 
   acorn@8.14.1:
     resolution: {integrity: sha512-OvQ/2pUDKmgfCg++xsTX1wGxfTaszcHVcTctW4UJB4hibJx2HXxxO5UmVgyjMa+ZDsiaf5wWLXYpRWMmBI0QHg==}
@@ -1389,6 +1395,8 @@ snapshots:
   '@vueuse/shared@13.1.0(vue@3.5.13)':
     dependencies:
       vue: 3.5.13
+
+  '@xterm/xterm@5.5.0': {}
 
   acorn@8.14.1: {}
 
