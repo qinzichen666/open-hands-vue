@@ -1,49 +1,33 @@
 <template>
-  <div ref="terminalRef" class="terminal-container"></div>
+  <div class="container" v-show="visible">
+    <div class="terminal-header">
+      <span>命令行终端</span>
+      <CloseOutlined @click="visible = false" />
+    </div>
+    <div ref="terminalRef" class="terminal-container"></div>
+  </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { Terminal } from '@xterm/xterm'
 import '@xterm/xterm/css/xterm.css'
+import { CloseOutlined } from '@ant-design/icons-vue'
+import { useChatStore } from '@/store/modules/chat'
+const chatStore = useChatStore()
+
+import emitter from '@/utils/emitter';
 
 const terminalRef = ref(null)
 let terminal = null
 let currentLine = ''
 let commandHistory = []
 let historyIndex = -1
+const visible = ref(false)
+emitter.on('terminal-visible', (value) => {
+  visible.value = value
+})
 
-// 从 localStorage 加载历史记录
-const loadHistory = async () => {
-  try {
-    // 从服务器获取历史记录
-    const history = [{
-      command: "ls",
-      response: "2048.html       gomoku.html     hello.sh        resume.html     snake.html      time_server.py"
-    }, {
-      command: "pwd",
-      response: "/Users/gy/Language/LLM/OpenHands/workspace"
-    }];
-
-    // 渲染历史记录到终端
-    history.forEach(record => {
-      terminal.writeln(`$ ${record.command}`)
-      terminal.writeln(record.response)
-    })
-
-    // 更新本地历史记录
-    commandHistory = history.map(record => record.command)
-    historyIndex = commandHistory.length
-
-    // 显示新的命令提示符
-    terminal.write('$ ')
-  } catch (error) {
-    console.error('Failed to load history:', error)
-    terminal.writeln('Error loading history from server')
-  }
-}
-
-// 保存历史记录到 localStorage
 const saveHistory = () => {
   console.log('commandHistory', commandHistory)
   localStorage.setItem('terminalHistory', JSON.stringify(commandHistory))
@@ -73,41 +57,27 @@ const handleCommand = async (command) => {
     default:
       if (command.startsWith('echo ')) {
         terminal.writeln(command.slice(5))
-      } else if (command.startsWith('server ')) {
-        try {
-          const serverCommand = command.slice(7)
-          const response = await sendToServer(serverCommand)
-          terminal.writeln(response)
-        } catch (error) {
-          terminal.writeln(`Error: ${error.message}`)
-        }
       } else {
-        terminal.writeln(`Command not found: ${command}`)
+        await sendToServer(command)
       }
   }
   saveHistory()
 }
 
-// 添加与服务器通信的方法
+// 修改：发送命令到服务器
 const sendToServer = async (command) => {
-  try {
-    const response = await fetch('/api/terminal/command', { // 替换为实际的API端点
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ command })
-    })
-
-    if (!response.ok) {
-      throw new Error('Server response was not ok')
+  const actionOptions = {
+    action: "run",
+    args: {
+      command: command,
+      is_input: false,
+      thought: "",
+      blocking: false,
+      hidden: false,
+      confirmation_state: "confirmed"
     }
-
-    const result = await response.json()
-    return result.response
-  } catch (error) {
-    throw new Error(`Failed to communicate with server: ${error.message}`)
   }
+  chatStore.socket.emit('oh_user_action', actionOptions)
 }
 
 onMounted(() => {
@@ -121,15 +91,22 @@ onMounted(() => {
   })
 
   terminal.open(terminalRef.value)
-  terminal.write('Welcome to the terminal!\r\n')
+  terminal.write('Welcome to the terminal!\r\n$ ')
 
-  // Load history after terminal is initialized
-  loadHistory()
+
+  emitter.on('terminal', (value) => {
+    if (value.type == 'command') {
+      terminal.writeln(`${value.content}`)
+    }
+    if (value.type == 'observation') {
+      terminal.writeln(value.content + '\n')
+      terminal.write('$ ')
+    }
+  })
 
   // 处理键盘输入
   terminal.onKey(({ key, domEvent }) => {
     const printable = !domEvent.altKey && !domEvent.ctrlKey && !domEvent.metaKey
-
     if (domEvent.keyCode === 13) { // Enter
       terminal.write('\r\n')
       handleCommand(currentLine)
@@ -167,12 +144,47 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  border-radius: 12px;
+  background-color: #1e1e1e;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #2d2d2d;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid #3d3d3d;
+
+  &:hover {
+    background-color: #363636;
+  }
+}
+
+.terminal-icon {
+  font-size: 12px;
+}
+
 .terminal-container {
   display: flex;
   flex: 1;
   width: 100%;
-  height: 100%;
   padding: 10px;
-  background-color: #1e1e1e;
+  transition: height 0.3s ease;
+}
+
+.terminal-collapsed {
+  height: 0;
+  overflow: hidden;
 }
 </style>

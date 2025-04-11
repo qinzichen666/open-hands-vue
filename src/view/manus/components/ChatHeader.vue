@@ -9,14 +9,21 @@
         {{ agent.status }}
       </div>
       <a-button type="primary" @click="$emit('share')">
-        分享
+        <ShareAltOutlined />分享
+      </a-button>
+      <a-button type="primary" @click="handleTerminal">
+        <ToolOutlined /> 终端
       </a-button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import emitter from '@/utils/emitter'
+import { ShareAltOutlined, ToolOutlined } from '@ant-design/icons-vue'
+const handleTerminal = () => {
+  emitter.emit('terminal-visible', true)
+}
 
 import { useChatStore } from '@/store/modules/chat'
 import { storeToRefs } from 'pinia'
@@ -37,7 +44,7 @@ defineEmits(['share'])
 <style lang="scss" scoped>
 .chat-header {
   height: 64px;
-  padding: 0 24px;
+  padding: 0 0 0 24px;
   border-bottom: 1px solid #e6e6e6;
   display: flex;
   align-items: center;

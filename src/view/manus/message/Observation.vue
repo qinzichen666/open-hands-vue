@@ -3,7 +3,7 @@
     <div class="observation-header" @click="togglePreview">
       <div class="command-preview">{{ command }}</div>
       <!-- <span class="expand-icon">{{ isExpanded ? '▼' : '▶' }}</span> -->
-      <ProfileOutlined />
+      <EyeOutlined />
     </div>
     <div class="observation-details" v-if="false">
       <div class="command-output">{{ information }}</div>
@@ -15,7 +15,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import emitter from '@/utils/emitter'
-import { ProfileOutlined } from '@ant-design/icons-vue'
+import { ProfileOutlined, EyeOutlined } from '@ant-design/icons-vue'
 const props = defineProps({
   message: {
     type: Object,
