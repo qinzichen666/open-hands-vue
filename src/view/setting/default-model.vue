@@ -2,8 +2,20 @@
   <div class="default-model">
     <h2>默认模型</h2>
     <div class="model-card">
-      <p>当前默认模型: GPT-4</p>
-      <a-button type="primary">更换模型</a-button>
+      <a-form :model="formState" layout="vertical" @finish="handleSubmit">
+        <a-form-item label="LLM模型名称">
+          <a-input v-model:value="formState.modelName" placeholder="例如: GPT-4" :disabled="loading" />
+        </a-form-item>
+        <a-form-item label="LLM URL">
+          <a-input v-model:value="formState.modelUrl" placeholder="https://api.example.com/v1" :disabled="loading" />
+        </a-form-item>
+        <a-form-item label="API Key">
+          <a-input-password v-model:value="formState.apiKey" placeholder="输入您的API密钥" :disabled="loading" />
+        </a-form-item>
+        <a-form-item>
+          <a-button type="primary" html-type="submit" :loading="loading">保存设置</a-button>
+        </a-form-item>
+      </a-form>
     </div>
     <div class="model-card">
       <p>模型参数设置</p>
@@ -13,10 +25,43 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
+import { message } from 'ant-design-vue'
+import settingService from '@/services/setting'
 
 const temperature = ref(0.7)
-// 可添加更多响应式逻辑
+const formState = reactive({
+  modelName: '',
+  modelUrl: '',
+  apiKey: ''
+})
+const loading = ref(false)
+
+// Fetch settings on mount
+onMounted(async () => {
+  try {
+    loading.value = true
+    const settings = await settingService.get()
+    Object.assign(formState, settings)
+  } catch (error) {
+    message.error('获取设置失败')
+  } finally {
+    loading.value = false
+  }
+})
+
+// Save settings
+const handleSubmit = async () => {
+  try {
+    loading.value = true
+    await settingService.save(formState)
+    message.success('设置保存成功')
+  } catch (error) {
+    message.error('保存设置失败')
+  } finally {
+    loading.value = false
+  }
+}
 </script>
 
 <style scoped>
