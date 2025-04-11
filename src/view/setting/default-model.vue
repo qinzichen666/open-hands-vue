@@ -1,12 +1,12 @@
 <template>
   <div class="default-model">
     <h2>默认模型</h2>
-    <div class="model-card">
+    <div>
       <a-form :model="formState" layout="vertical" @finish="handleSubmit">
-        <a-form-item label="LLM模型名称">
+        <a-form-item label="自定义模型">
           <a-input v-model:value="formState.modelName" placeholder="例如: GPT-4" :disabled="loading" />
         </a-form-item>
-        <a-form-item label="LLM URL">
+        <a-form-item label="模型 URL">
           <a-input v-model:value="formState.modelUrl" placeholder="https://api.example.com/v1" :disabled="loading" />
         </a-form-item>
         <a-form-item label="API Key">
@@ -16,10 +16,6 @@
           <a-button type="primary" html-type="submit" :loading="loading">保存设置</a-button>
         </a-form-item>
       </a-form>
-    </div>
-    <div class="model-card">
-      <p>模型参数设置</p>
-      <a-slider v-model:value="temperature" :min="0" :max="1" :step="0.1" />
     </div>
   </div>
 </template>
@@ -40,13 +36,11 @@ const loading = ref(false)
 // Fetch settings on mount
 onMounted(async () => {
   try {
-    loading.value = true
     const settings = await settingService.get()
     Object.assign(formState, settings)
   } catch (error) {
     message.error('获取设置失败')
   } finally {
-    loading.value = false
   }
 })
 
