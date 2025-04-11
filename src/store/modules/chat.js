@@ -3,6 +3,8 @@ import { io } from "socket.io-client";
 import chat from '@/services/chat';
 const baseUrl = import.meta.env.VITE_WS_API_URL;
 
+import emitter from '@/utils/emitter';
+
 export const useChatStore = defineStore('chat', {
   state: () => ({
     list: [],
@@ -15,7 +17,8 @@ export const useChatStore = defineStore('chat', {
     },
     conversationId: null,
     socket: null,
-    baseUrl: baseUrl
+    baseUrl: baseUrl,
+    commands: []
   }),
   actions: {
     async init() {
@@ -52,23 +55,35 @@ export const useChatStore = defineStore('chat', {
           return;
         }
         if (action === 'recall') {
+          // 过滤不显示的信息
           return;
         }
         if (observation && observation === 'agent_state_changed') {
           return;
         }
         if (source === 'user' && action === 'run') {
+          // 命令执行
+          const value = {
+            type: 'command',
+            content: data.args.command,
+          }
+          emitter.emit('terminal', value);
+          this.commands.push(value);
           return;
         }
         if (source === 'user' && observation) {
+          if (observation == 'run') {
+            const value = {
+              type: 'observation',
+              content: data.content
+            }
+            emitter.emit('terminal', value);
+            this.commands.push(value);
+          }
           return;
         }
         this.events.push(data);
         if (source === 'user' || source === 'agent') {
-          // const item = {
-          //   role: source,
-          //   content: message
-          // }
           Object.assign(data, {
             role: source,
           });

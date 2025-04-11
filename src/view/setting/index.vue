@@ -2,7 +2,11 @@
   <div class="setting-container">
     <!-- Top Navigation Bar -->
     <div class="top-bar">
+<<<<<<< HEAD
       <a-button type="text" @click="$router.back()">
+=======
+      <a-button type="text" @click="back">
+>>>>>>> main
         <template #icon>
           <arrow-left-outlined />
         </template>
@@ -25,17 +29,17 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ArrowLeftOutlined } from '@ant-design/icons-vue'
 import SettingMenu from './MenuSide.vue'
 
-export default {
-  name: 'SettingPage',
-  components: {
-    ArrowLeftOutlined,
-    SettingMenu
-  }
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const back = () => {
+  router.push('/')
 }
+
 </script>
 
 <style scoped>
