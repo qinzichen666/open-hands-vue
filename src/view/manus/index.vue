@@ -14,7 +14,6 @@ import Sidebar from './sidebar/index.vue'
 import ChatPanel from './components/ChatPanel.vue'
 import Preview from '@/components/preview/index.vue'
 import Terminal from '@/components/terminal/index.vue'
-import VscodeRender from '@/components/vscode/VscodeRender.vue'
 import { useRoute } from 'vue-router';
 const route = useRoute();
 
