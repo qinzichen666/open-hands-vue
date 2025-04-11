@@ -1,7 +1,4 @@
-import {
-  createRouter,
-  createWebHistory,
-} from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   {
@@ -26,8 +23,30 @@ const routes = [
     path: "/auth",
     name: "login",
     component: () => import(/* webpackChunkName: "auth" */ "@/view/auth/index.vue"),
+  },
+  {
+    path: "/setting",
+    component: () => import("@/view/setting/index.vue"),
+    meta: { verify: true },
+    children: [
+      {
+        path: "basic",
+        component: () => import("@/view/setting/basic.vue"),
+        meta: { verify: true }
+      },
+      {
+        path: "default-model",
+        component: () => import("@/view/setting/default-model.vue"),
+        meta: { verify: true }
+      },
+      {
+        path: "model-service",
+        component: () => import("@/view/setting/model.vue"),
+        meta: { verify: true }
+      }
+    ]
   }
-];
+]
 
 const router = createRouter({
   history: createWebHistory(),
@@ -47,4 +66,4 @@ router.beforeEach((to, from, next) => {
   next();
 })
 
-export default router;
+export default router

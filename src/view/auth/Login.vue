@@ -4,27 +4,19 @@
       <!-- Logo -->
       <div class="logo-container">
         <div class="logo">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/>
-            <path d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" fill="currentColor"/>
-          </svg>
+          <img src="@/assets/svgs/logo.svg" alt="Logo"/>
         </div>
       </div>
       
       <!-- Title -->
-      <h2 class="auth-title">{{ activeKey === 'login' ? '登录到 OpenHands' : activeKey === 'register' ? '注册 OpenHands 账号' : '重置密码' }}</h2>
+      <h2 class="auth-title">{{ pageTitle }}</h2>
       
       <div v-if="activeKey === 'login'">
         <!-- Login Form -->
         <div class="social-buttons">
           <a-button class="social-button google" @click="handleGoogleLogin">
             <template #icon>
-              <svg viewBox="0 0 24 24" width="18" height="18">
-                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-              </svg>
+              <img src="@/assets/svgs/google.svg"/>
             </template>
             使用 Google 登录
           </a-button>
@@ -69,7 +61,12 @@
           </a-form-item>
 
           <a-form-item>
-            <a-button type="primary" html-type="submit" block :loading="loading">
+            <a-button 
+              type="primary" 
+              html-type="submit" 
+              block 
+              :loading="loading"
+              :disabled="!isLoginValid">
               登录
             </a-button>
           </a-form-item>
@@ -86,12 +83,7 @@
         <div class="social-buttons">
           <a-button class="social-button google" @click="handleGoogleRegister">
             <template #icon>
-              <svg viewBox="0 0 24 24" width="18" height="18">
-                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-              </svg>
+              <img src="@/assets/svgs/google.svg" alt="Google Logo"/>
             </template>
             使用 Google 注册
           </a-button>
@@ -141,7 +133,12 @@
           </a-form-item>
 
           <a-form-item>
-            <a-button type="primary" html-type="submit" block :loading="loading">
+            <a-button 
+              type="primary" 
+              html-type="submit" 
+              block 
+              :loading="loading"
+              :disabled="!isRegisterValid">
               注册
             </a-button>
           </a-form-item>
@@ -185,12 +182,50 @@
           </div>
         </a-form>
       </div>
+
+      <div v-if="activeKey === 'verify'">
+        <!-- Email Verification Form -->
+        <div class="verify-container">
+          <p class="verify-text">验证码已发送至 {{ verifyEmail }}</p>
+          
+          <a-form
+            :model="verifyForm"
+            name="verify-form"
+            @finish="handleVerify"
+            autocomplete="off"
+            layout="vertical"
+          >
+            <a-form-item
+              name="code"
+              :rules="[{ required: true, message: '请输入验证码!' }]"
+            >
+              <a-input v-model:value="verifyForm.code" placeholder="请输入6位验证码">
+              </a-input>
+            </a-form-item>
+
+            <a-form-item>
+              <a-button 
+                type="primary" 
+                html-type="submit" 
+                block 
+                :loading="loading"
+                :disabled="!verifyForm.code">
+                验证邮箱
+              </a-button>
+            </a-form-item>
+
+            <div class="verify-footer">
+              <p>没有收到验证码？ <a @click="resendCode">重新发送</a></p>
+            </div>
+          </a-form>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive,computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import auth from '@/services/auth';
@@ -206,6 +241,10 @@ const loginForm = reactive({
   remember: false
 });
 
+const isLoginValid = computed(() => {
+  return loginForm.email && loginForm.password;
+});
+
 // 注册表单
 const registerForm = reactive({
   fullname: '',
@@ -213,10 +252,53 @@ const registerForm = reactive({
   password: ''
 });
 
+const isRegisterValid = computed(() => {
+  return registerForm.fullname && registerForm.email && registerForm.password;
+});
+
 // 忘记密码表单
 const forgotForm = reactive({
   email: ''
 });
+
+// 验证相关状态
+const verifyEmail = ref('');
+const verifyForm = reactive({
+  code: ''
+});
+
+const pageTitle = computed(() => {
+  switch (activeKey.value) {
+    case 'login':
+      return '登录到 OpenAgent';
+    case 'register':
+      return '注册 OpenAgent 账号';
+    case 'verify':
+      return '验证你的邮箱地址';
+    default:
+      return '重置密码';
+  }
+});
+
+// 处理验证码提交
+const handleVerify = async () => {
+  try {
+    loading.value = true;
+    // 这里添加验证码验证逻辑
+    message.success('邮箱验证成功');
+    // 验证成功后跳转到应用
+    router.push('/app');
+  } catch (error) {
+    message.error('验证码错误，请重试');
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 重新发送验证码
+const resendCode = () => {
+  message.info('验证码已重新发送');
+};
 
 // 处理登录
 const handleLogin = async (values) => {
@@ -244,20 +326,41 @@ const handleLogin = async (values) => {
 const handleRegister = async (values) => {
   try {
     loading.value = true;
-    console.log('注册表单提交:', values);
     
-    // 只使用邮箱和密码注册，符合API要求
+    // 基础非空校验
+    if (!values.fullname || !values.email || !values.password) {
+      throw new Error('请填写完整注册信息');
+    }
+    
+    // 邮箱格式校验
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(values.email)) {
+      throw new Error('请输入有效的邮箱地址');
+    }
+    
+    // 密码长度校验
+    if (values.password.length < 6) {
+      throw new Error('密码长度不能少于6位');
+    }
+    
+    console.log('注册表单提交:', values);
+    // 暂时注释API调用
     await auth.register(values.email, values.password);
     
+
     message.success('注册成功，请登录');
     activeKey.value = 'login';
     
     // 预填充登录表单
     loginForm.email = values.email;
     loginForm.password = '';
+    
+    // 跳转到邮箱验证页面
+    // activeKey.value = 'verify';
+    // verifyEmail.value = values.email;
   } catch (error) {
-    console.error('注册失败:', error);
-    message.error('注册失败，请稍后再试');
+    console.error('注册校验失败:', error);
+    message.error(error.message || '注册失败，请检查输入');
   } finally {
     loading.value = false;
   }
@@ -381,7 +484,11 @@ const handleAppleRegister = async () => {
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 15px;
+        font-size: 14px;
+
+        img{
+          margin-right: 6px;
+        }
         
         &.google {
           border: none;
@@ -524,6 +631,18 @@ const handleAppleRegister = async () => {
           background-color: #4338ca;
           border-color: #4338ca;
         }
+
+        &[disabled] {
+          background-color: #d1d5db;
+          border-color: #d1d5db;
+          color: white;
+          cursor: not-allowed;
+          
+          &:hover {
+            background-color: #d1d5db;
+            border-color: #d1d5db;
+          }
+        }
       }
     }
     
@@ -542,6 +661,63 @@ const handleAppleRegister = async () => {
           text-decoration: underline;
         }
       }
+    }
+  }
+}
+
+.verify-container {
+  text-align: center;
+  padding: 24px;
+  
+  .verify-icon {
+    margin-bottom: 24px;
+    
+    svg {
+      color: #4f46e5;
+    }
+  }
+  
+  .verify-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #111827;
+  }
+  
+  .verify-text {
+    font-size: 16px;
+    color: #6b7280;
+    margin-bottom: 32px;
+  }
+  
+  .verify-footer {
+    margin-top: 24px;
+    font-size: 14px;
+    color: #6b7280;
+    
+    p {
+      margin-bottom: 12px;
+    }
+    
+    a {
+      color: #4f46e5;
+      font-weight: 500;
+      cursor: pointer;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  :deep(.ant-form-item) {
+    max-width: 360px;
+    margin: 0 auto;
+    
+    .ant-input {
+      text-align: center;
+      letter-spacing: 8px;
+      font-size: 18px;
     }
   }
 }
