@@ -2,11 +2,7 @@
   <div class="setting-container">
     <!-- Top Navigation Bar -->
     <div class="top-bar">
-<<<<<<< HEAD
-      <a-button type="text" @click="$router.back()">
-=======
       <a-button type="text" @click="back">
->>>>>>> main
         <template #icon>
           <arrow-left-outlined />
         </template>
