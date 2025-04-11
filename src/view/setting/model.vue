@@ -1,13 +1,12 @@
 <template>
   <div class="model-service">
     <h2>模型服务</h2>
-    <!-- 这里添加模型服务的具体内容 -->
-    <div class="service-item">
+    <!-- <div class="service-item">
       <p>API配置</p>
     </div>
     <div class="service-item">
       <p>模型管理</p>
-    </div>
+    </div> -->
   </div>
 </template>
 

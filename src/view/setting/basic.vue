@@ -1,12 +1,12 @@
 <template>
   <div class="basic-settings">
     <h2>基本设置</h2>
-    <div class="setting-item">
+    <!-- <div class="setting-item">
       <p>账号设置</p>
     </div>
     <div class="setting-item">
       <p>通知偏好</p>
-    </div>
+    </div> -->
   </div>
 </template>
 
