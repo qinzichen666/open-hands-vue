@@ -53,6 +53,17 @@ h1 {
   margin: 0 auto;
 }
 
+//适配移动端
+@media screen and (max-width: 375px) {
+  #app {
+    width: 100%;
+    min-width: 375px;
+    height: 100vh;
+    margin: 0 auto;
+  }
+}
+
+
 .resume-box {
   border: 1px solid #f5f5f5;
   border-radius: 8px;

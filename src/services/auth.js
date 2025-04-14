@@ -75,7 +75,25 @@ const service = {
   
   isLoggedIn() {
     return !!localStorage.getItem('token');
-  }
+  },
+
+  //请求谷歌 校验 code
+  async googleAuth(code) {
+    try {
+      const uri = "/api/users/google-auth";
+      const response = await http.post(uri, { code });
+      
+      if (response.data && response.data.access_token) {
+        localStorage.setItem('access_token', response.data.access_token);
+        // localStorage.setItem('user', JSON.stringify(response.data.user));
+      }
+      
+      return response.data || {};
+    } catch (error) {
+      console.error('Google auth error:', error);
+      throw error;
+    }
+  },
 };
 
 export default service;

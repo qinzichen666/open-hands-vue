@@ -225,7 +225,7 @@
 </template>
 
 <script setup>
-import { ref, reactive,computed } from 'vue';
+import { ref, reactive,computed,onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import auth from '@/services/auth';
@@ -385,20 +385,48 @@ const handleForgotPassword = async (values) => {
 };
 
 // 社交登录方法
-const handleGoogleLogin = async () => {
+const handleGoogleLogin = () => {
   try {
     loading.value = true;
-    console.log('Google 登录');
-    message.info('Google 登录功能正在开发中');
-    // 实际实现可能需要调用 OAuth 服务
-    // await AuthService.googleLogin();
+
+    // 替换为你的客户端 ID 和回调地址
+    const clientId = '973572698649-hbp15ju1nhlsja1k2gbqktmrulk0hopp.apps.googleusercontent.com';
+    const redirectUri = encodeURIComponent('http://localhost:5000/auth'); // 替换为你的回调地址
+    const scope = encodeURIComponent('profile email'); // 请求的权限范围
+    const responseType = 'code'; // 授权码模式
+
+    // 构造 Google OAuth 授权 URL
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=${responseType}&access_type=offline&prompt=consent`;
+
+    // 跳转到 Google 登录页面
+    window.location.href = googleAuthUrl;
   } catch (error) {
-    console.error('Google 登录失败:', error);
-    message.error('Google 登录失败，请稍后再试');
+    console.error('Google 登录跳转失败:', error);
+    message.error('Google 登录跳转失败，请稍后再试');
   } finally {
     loading.value = false;
   }
 };
+
+
+//初始化判断 url 中是否包含code 
+onMounted( async  () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('code')) {
+    // 这里可以处理授权码
+    await auth.googleAuth(urlParams.get('code'));
+
+    message.success('登录成功');
+    // 跳转到首页 app
+    router.push(
+      {
+        name: 'app'
+      }
+    )
+    //请求谷歌进行校验
+  }
+});
+
 
 const handleAppleLogin = async () => {
   try {
@@ -478,13 +506,15 @@ const handleAppleRegister = async () => {
       align-items: center;
       
       .social-button {
-        width: 360px;
+        width: 100%;
         height: 40px;
         border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 14px;
+
+        
 
         img{
           margin-right: 6px;
@@ -497,6 +527,9 @@ const handleAppleRegister = async () => {
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
       }
+
+     
+
     }
     
     .divider {
@@ -548,13 +581,18 @@ const handleAppleRegister = async () => {
       }
     }
     
+    :deep(.ant-form-item-control-input-content){
+      width: 360px;
+    }
+
     :deep(.ant-form-item) {
+      width: 100%;
       margin-bottom: 20px;
       display: flex;
       justify-content: center;
       
       .ant-form-item-control {
-        width: 360px;
+        width: 100%;
       }
       
       .ant-form-item-label > label {
@@ -576,7 +614,7 @@ const handleAppleRegister = async () => {
       }
       
       .ant-input {
-        width: 360px;
+        width: 100%;
         height: 40px;
         border-radius: 8px;
         border: 1px solid #d1d5db;
@@ -588,7 +626,7 @@ const handleAppleRegister = async () => {
       }
       
       .ant-input-affix-wrapper {
-        width: 360px !important;
+        width: 100%;
         height: 40px !important;
         border-radius: 8px !important;
         border: 1px solid #d1d5db !important;
@@ -599,6 +637,8 @@ const handleAppleRegister = async () => {
         &:hover, &:focus, &-focused {
           border-color: #4f46e5 !important;
         }
+
+       
         
         .ant-input {
           width: 100% !important;
@@ -619,7 +659,7 @@ const handleAppleRegister = async () => {
       }
       
       .ant-btn {
-        width: 360px;
+        width: 100%;
         height: 40px;
         border-radius: 8px;
         font-size: 16px;
@@ -711,7 +751,7 @@ const handleAppleRegister = async () => {
   }
   
   :deep(.ant-form-item) {
-    max-width: 360px;
+    max-width: 100%;
     margin: 0 auto;
     
     .ant-input {
@@ -721,4 +761,5 @@ const handleAppleRegister = async () => {
     }
   }
 }
+
 </style>
