@@ -389,12 +389,13 @@ const handleGoogleLogin = () => {
   try {
     loading.value = true;
 
+    //读取.env 里面的 VITE_GOOGLE_BACK_URL
     // 替换为你的客户端 ID 和回调地址
     const clientId = '973572698649-hbp15ju1nhlsja1k2gbqktmrulk0hopp.apps.googleusercontent.com';
-    const redirectUri = encodeURIComponent('http://localhost:5000/auth'); // 替换为你的回调地址
+    const redirectUri = encodeURIComponent(import.meta.env.VITE_GOOGLE_BACK_URL); // 替换为你的回调地址
     const scope = encodeURIComponent('profile email'); // 请求的权限范围
     const responseType = 'code'; // 授权码模式
-
+    console.log(" ----- redirectUri ----- ", redirectUri);
     // 构造 Google OAuth 授权 URL
     const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=${responseType}&access_type=offline&prompt=consent`;
 

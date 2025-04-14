@@ -20,11 +20,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,h } from 'vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
-import auth from '@/api/auth';
+import auth from '@/services/auth';
 
 const router = useRouter();
 const percent = ref(0);

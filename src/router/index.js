@@ -25,6 +25,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "auth" */ "@/view/auth/index.vue"),
   },
   {
+    path: "/auth/google",
+    name: "google",
+    component: () => import(/* webpackChunkName: "auth" */ "@/view/auth/GoogleCallback.vue"),
+  },
+  {
     path: "/setting",
     component: () => import("@/view/setting/index.vue"),
     meta: { verify: true },
