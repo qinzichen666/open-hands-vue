@@ -1,4 +1,5 @@
 import axios from "axios";
+import { message } from 'ant-design-vue';
 import { useUserStore } from "@/store/modules/user.js";
 
 // 设置 post 请求头
@@ -36,16 +37,32 @@ instance.interceptors.request.use(
 );
 
 // 响应拦截（请求返回后拦截）
+let isShowing401Error = false; // 标志位，用于控制 401 提示是否已显示
+
 instance.interceptors.response.use(
   (res) => {
-    // console.log('res', res);
     if (res.data.data) {
       return res.data.data;
     }
     return res;
   },
   (error) => {
-    console.log("catch", error);
+    if (error && error.status === 401) {
+      if (!isShowing401Error) {
+        // 只有当标志位为 false 时才显示错误提示
+        isShowing401Error = true; // 设置标志位为 true
+       
+
+        // 清除 token
+        localStorage.removeItem("access_token");
+
+        // 跳转到登录页面
+        window.location.href = "/auth";
+
+        // message.error("登录过期，请重新登录",3000);
+      }
+      return Promise.reject(error); // 返回错误的 Promise
+    }
     return Promise.reject(error);
   }
 );
