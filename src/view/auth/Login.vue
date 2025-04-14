@@ -409,23 +409,7 @@ const handleGoogleLogin = () => {
 };
 
 
-//初始化判断 url 中是否包含code 
-onMounted( async  () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.has('code')) {
-    // 这里可以处理授权码
-    await auth.googleAuth(urlParams.get('code'));
 
-    message.success('登录成功');
-    // 跳转到首页 app
-    router.push(
-      {
-        name: 'app'
-      }
-    )
-    //请求谷歌进行校验
-  }
-});
 
 
 const handleAppleLogin = async () => {
